@@ -20,7 +20,7 @@ class LongIDEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
-    var name: String? = null
+    var name: String
 )
 data class HashIDEntity(val id: String, val name: String)
 @Entity
@@ -29,7 +29,7 @@ class NanoIDEntity(
     @GeneratedValue(generator = "nano-generator")
     @GenericGenerator(name = "nano-generator", strategy = "com.example.nanoiddemo.NanoIDGenerator")
     var id: String? = null,
-    var name: String? = null
+    var name: String
 )
 
 @Repository
@@ -59,4 +59,12 @@ class HashIDProvider {
     private val provider = Hashids("YOUR_SUPER_SECURE_SALT_HERE", 8)
     fun getID(hashID: String) = provider.decode(hashID).first()
     fun getHashID(id: Long) = provider.encode(id)
+}
+
+interface IDProvider{
+    companion object{
+        val hashIDProvider = HashIDProvider()
+    }
+    fun getID(hashID: String) = hashIDProvider.getID(hashID)
+    fun getHashID(id: Long) = hashIDProvider.getHashID(id)
 }
