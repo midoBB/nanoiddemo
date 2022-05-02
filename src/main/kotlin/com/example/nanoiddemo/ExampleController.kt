@@ -20,5 +20,5 @@ class ExampleController(
     @GetMapping("/hash")
     fun hash() = repository.findAll().map { HashIDEntity(getHashID(it.id!!), it.name) }
     @GetMapping("/hash/{id}")
-    fun hashByID(@PathVariable id: String) = repository.findById(getID(id))
+    fun hashByID(@PathVariable id: String) = repository.findById(getID(id)).map { HashIDEntity(getHashID(it.id!!), it.name) }
 }

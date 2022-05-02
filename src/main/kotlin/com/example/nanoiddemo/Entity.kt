@@ -7,7 +7,6 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor
 import org.hibernate.id.IdentifierGenerator
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import org.springframework.stereotype.Service
 import java.io.Serializable
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -54,14 +53,13 @@ class NanoIDGenerator : IdentifierGenerator {
     }
 }
 
-@Service
-class HashIDProvider {
-    private val provider = Hashids("YOUR_SUPER_SECURE_SALT_HERE", 8)
-    fun getID(hashID: String) = provider.decode(hashID).first()
-    fun getHashID(id: Long) = provider.encode(id)
-}
 
 interface IDProvider{
+    class HashIDProvider {
+        private val provider = Hashids("YOUR_SUPER_SECURE_SALT_HERE", 8)
+        fun getID(hashID: String) = provider.decode(hashID).first()
+        fun getHashID(id: Long) = provider.encode(id)
+    }
     companion object{
         val hashIDProvider = HashIDProvider()
     }
